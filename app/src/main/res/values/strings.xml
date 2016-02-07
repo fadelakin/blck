@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">BLCK</string>
     <string name="action_settings">Settings</string>
+    <string name="picture">Picture</string>
+    <string name="description_info">Info</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
 </resources>
