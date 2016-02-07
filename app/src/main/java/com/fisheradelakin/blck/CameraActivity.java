@@ -122,6 +122,7 @@ public class CameraActivity extends AppCompatActivity
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture texture) {
+            closeCamera();
             return true;
         }
 
