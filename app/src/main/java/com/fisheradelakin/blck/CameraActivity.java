@@ -314,6 +314,7 @@ public class CameraActivity extends AppCompatActivity
         }
 
     };
+    private File mFolder;
 
     /**
      * Shows a {@link Toast} on the UI thread.
@@ -385,21 +386,18 @@ public class CameraActivity extends AppCompatActivity
         setContentView(R.layout.activity_camera);
 
         findViewById(R.id.picture).setOnClickListener(this);
-        findViewById(R.id.info).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) findViewById(R.id.texture);
 
         requestStoragePermission();
 
-        File folder = new File(Environment.getExternalStorageDirectory() + "/Blck");
+        mFolder = new File(Environment.getExternalStorageDirectory() + "/Blck");
 
-        if (!folder.exists()) {
-            folder.mkdir();
+        if (!mFolder.exists()) {
+            mFolder.mkdir();
             Log.i(TAG, "Folder doesn't exist");
         } else {
             Log.i(TAG, "Folder exists");
         }
-
-        mFile = new File(folder, "blck" + new Date().toString() + ".jpg");
     }
 
     @Override
@@ -433,13 +431,6 @@ public class CameraActivity extends AppCompatActivity
                 takePicture();
                 break;
             }
-            case R.id.info: {
-                new AlertDialog.Builder(this)
-                        .setMessage(R.string.intro_message)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show();
-            }
-            break;
         }
     }
 
@@ -447,7 +438,8 @@ public class CameraActivity extends AppCompatActivity
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             new StorageConfirmationDialog().show(getFragmentManager(), FRAGMENT_DIALOG);
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_STORAGE_PERMISSION);
         }
     }
 
@@ -469,7 +461,8 @@ public class CameraActivity extends AppCompatActivity
             }
         } else if(requestCode == REQUEST_STORAGE_PERMISSION) {
             if(grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                ErrorDialog.newInstance(getString(R.string.request_storage_permission)).show(getFragmentManager(), FRAGMENT_DIALOG);
+                ErrorDialog.newInstance(getString(R.string.request_storage_permission)).show(getFragmentManager(),
+                        FRAGMENT_DIALOG);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -596,6 +589,11 @@ public class CameraActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
+            return;
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestStoragePermission();
             return;
         }
         setUpCameraOutputs(width, height);
@@ -805,6 +803,7 @@ public class CameraActivity extends AppCompatActivity
             if (null == mCameraDevice) {
                 return;
             }
+            mFile = new File(mFolder, "blck" + new Date().toString() + ".jpg");
             // This is the CaptureRequest.Builder that we use to take a picture.
             final CaptureRequest.Builder captureBuilder =
                     mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);

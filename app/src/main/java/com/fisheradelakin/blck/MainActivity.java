@@ -9,8 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.commonsware.cwac.cam2.CameraActivity;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_PORTRAIT_BFC = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                startActivity(intent);*/
+                Intent i = new CameraActivity.IntentBuilder(MainActivity.this).debug().build();
+                startActivityForResult(i, REQUEST_PORTRAIT_BFC);
             }
         });
     }
