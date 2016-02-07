@@ -24,7 +24,7 @@ public class AutoFitTextureView extends TextureView {
         super(context, attrs, defStyle);
     }
 
-    public void setAspectRation(int width, int height) {
+    public void setAspectRatio(int width, int height) {
         if(width < 0 || height < 0) {
             throw new IllegalArgumentException("Size can't be negative");
         }
