@@ -27,6 +27,7 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -50,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -63,6 +65,7 @@ public class CameraActivity extends AppCompatActivity
     // Conversion from screen rotation to JPEG orientation.
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 1;
+    private static final int REQUEST_STORAGE_PERMISSION = 2;
     private static final String FRAGMENT_DIALOG = "dialog";
 
     static {
@@ -385,7 +388,18 @@ public class CameraActivity extends AppCompatActivity
         findViewById(R.id.info).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) findViewById(R.id.texture);
 
-        mFile = new File(getExternalFilesDir(null), "pic.jpg");
+        requestStoragePermission();
+
+        File folder = new File(Environment.getExternalStorageDirectory() + "/Blck");
+
+        if (!folder.exists()) {
+            folder.mkdir();
+            Log.i(TAG, "Folder doesn't exist");
+        } else {
+            Log.i(TAG, "Folder exists");
+        }
+
+        mFile = new File(folder, "blck" + new Date().toString() + ".jpg");
     }
 
     @Override
@@ -429,6 +443,14 @@ public class CameraActivity extends AppCompatActivity
         }
     }
 
+    private void requestStoragePermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            new StorageConfirmationDialog().show(getFragmentManager(), FRAGMENT_DIALOG);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+        }
+    }
+
     private void requestCameraPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
             new ConfirmationDialog().show(getFragmentManager(), FRAGMENT_DIALOG);
@@ -444,6 +466,10 @@ public class CameraActivity extends AppCompatActivity
             if (grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 ErrorDialog.newInstance(getString(R.string.request_permission))
                         .show(getFragmentManager(), FRAGMENT_DIALOG);
+            }
+        } else if(requestCode == REQUEST_STORAGE_PERMISSION) {
+            if(grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                ErrorDialog.newInstance(getString(R.string.request_storage_permission)).show(getFragmentManager(), FRAGMENT_DIALOG);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -942,13 +968,17 @@ public class CameraActivity extends AppCompatActivity
             return new AlertDialog.Builder(getActivity())
                     .setMessage(R.string.request_permission)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(activity,
-                                    new String[]{Manifest.permission.CAMERA},
-                                    REQUEST_CAMERA_PERMISSION);
-                        }
-                    })
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(activity,
+                                            new String[]{Manifest.permission.CAMERA},
+                                            REQUEST_CAMERA_PERMISSION);
+                                    ActivityCompat.requestPermissions(activity, new String[]{
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+                                }
+                            }
+
+                    )
                     .setNegativeButton(android.R.string.cancel,
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -958,7 +988,41 @@ public class CameraActivity extends AppCompatActivity
                                         activity.finish();
                                     }
                                 }
-                            })
+                            }
+
+                    )
+                    .create();
+        }
+    }
+
+    public static class StorageConfirmationDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Fragment parent = getParentFragment();
+            final Activity activity = getActivity();
+            return new AlertDialog.Builder(getActivity())
+                    .setMessage(R.string.request_permission)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(activity, new String[]{
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+                                }
+                            }
+
+                    )
+                    .setNegativeButton(android.R.string.cancel,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Activity activity = parent.getActivity();
+                                    if (activity != null) {
+                                        activity.finish();
+                                    }
+                                }
+                            }
+
+                    )
                     .create();
         }
     }

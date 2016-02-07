@@ -5,5 +5,6 @@
     <string name="description_info">Info</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="request_permission">This app needs camera permission.</string>
+    <string name="request_storage_permission">This app needs the storage permission to save pictures.</string>
     <string name="intro_message">blck</string>
 </resources>
