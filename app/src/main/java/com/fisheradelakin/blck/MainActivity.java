@@ -69,7 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView blckRV = (RecyclerView) findViewById(R.id.blck_rv);
         blckRV.setHasFixedSize(true);
-        blckRV.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        blckRV.setLayoutManager(layoutManager);
         BlckAdapter adapter = new BlckAdapter(this, fileList);
         blckRV.setAdapter(adapter);
     }

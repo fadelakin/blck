@@ -9,6 +9,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:id="@+id/image"/>
+        android:id="@+id/image"
+        fresco:actualImageScaleType="centerCrop"/>
 
 </LinearLayout>
