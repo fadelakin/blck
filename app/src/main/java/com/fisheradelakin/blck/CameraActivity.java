@@ -386,12 +386,16 @@ public class CameraActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         findViewById(R.id.picture).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) findViewById(R.id.texture);
 
         requestStoragePermission();
 
-        mFolder = new File(Environment.getExternalStorageDirectory() + "/Blck");
+        mFolder = new File(Environment.getExternalStorageDirectory(), "Blck");
 
         if (!mFolder.exists()) {
             mFolder.mkdir();
