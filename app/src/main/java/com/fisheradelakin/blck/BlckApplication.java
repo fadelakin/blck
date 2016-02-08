@@ -4,8 +4,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.DisplayMetrics;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-
 /**
  * Created by temidayo on 2/7/16.
  */
@@ -29,8 +27,5 @@ public class BlckApplication extends Application {
                 .putInt(SCREEN_HEIGHT, metrics.heightPixels)
                 .putInt(SCREEN_WIDTH, metrics.widthPixels)
                 .apply();
-
-
-        Fresco.initialize(this);
     }
 }

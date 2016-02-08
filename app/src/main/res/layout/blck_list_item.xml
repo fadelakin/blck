@@ -3,13 +3,11 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:padding="15dp">
+              xmlns:fresco="http://schemas.android.com/apk/res-auto">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:id="@+id/image"
-        fresco:actualImageScaleType="centerCrop"/>
+        android:id="@+id/image"/>
 
 </LinearLayout>

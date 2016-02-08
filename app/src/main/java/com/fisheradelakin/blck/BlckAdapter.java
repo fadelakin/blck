@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -53,7 +52,7 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
         int width = options.outWidth;
         int height = options.outHeight;
 
-        //boolean isInPotrait = height > width;
+        //boolean isInPortrait = height > width;
 
         SharedPreferences sharedPreferences
                 = mContext.getSharedPreferences(BlckApplication.PREFS, Context.MODE_PRIVATE);
@@ -71,7 +70,6 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
                 .rotate(getOrientationFromExif(file.getAbsolutePath()))
                 .resize(screenWidth, scaledHeight)
                 .into(holder.picture);
-        //holder.picture.setImageURI(Uri.fromFile(file));
     }
 
     @Override
@@ -82,12 +80,12 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
 
-        SimpleDraweeView picture;
+        ImageView picture;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            picture = (SimpleDraweeView) itemView.findViewById(R.id.image);
+            picture = (ImageView) itemView.findViewById(R.id.image);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -122,7 +120,7 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
                     ExifInterface.ORIENTATION_NORMAL);
 
             switch (exifOrientation) {
-                // Upside down potrait
+                // Upside down portrait
                 case ExifInterface.ORIENTATION_ROTATE_270:
                     orientation = 270;
                     break;
@@ -130,7 +128,7 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
                 case ExifInterface.ORIENTATION_ROTATE_180:
                     orientation = 180;
                     break;
-                // Normal potrait
+                // Normal portrait
                 case ExifInterface.ORIENTATION_ROTATE_90:
                     orientation = 90;
                     break;
