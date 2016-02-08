@@ -39,8 +39,8 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         File file = mFileList.get(position);
 
-        //Picasso.with(mContext).load(file).into(holder.picture);
-        holder.picture.setImageURI(Uri.fromFile(file));
+        Picasso.with(mContext).load(file).into(holder.picture);
+        //holder.picture.setImageURI(Uri.fromFile(file));
     }
 
     @Override
