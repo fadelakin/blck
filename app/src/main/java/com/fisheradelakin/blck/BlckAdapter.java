@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.squareup.picasso.Picasso;
@@ -71,6 +72,12 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
 
         @Override
         public boolean onLongClick(View v) {
+            File file = mFileList.get(getLayoutPosition());
+            if(file != null) {
+                file.delete();
+                Toast.makeText(mContext, "File deleted", Toast.LENGTH_SHORT).show();
+                notifyDataSetChanged();
+            }
             return true;
         }
     }

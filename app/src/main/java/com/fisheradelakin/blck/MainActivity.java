@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final int READ_STORAGE_PERMISSION = 1;
+    private RecyclerView mBlckRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,21 +61,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        List<File> fileList = new ArrayList<>();
+        final List<File> fileList = new ArrayList<>();
         for(File file : folder.listFiles()) {
             if (file.isFile()) {
                 fileList.add(file);
             }
         }
 
-        RecyclerView blckRV = (RecyclerView) findViewById(R.id.blck_rv);
-        blckRV.setHasFixedSize(true);
+        mBlckRV = (RecyclerView) findViewById(R.id.blck_rv);
+        mBlckRV.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
-        blckRV.setLayoutManager(layoutManager);
+        mBlckRV.setLayoutManager(layoutManager);
         BlckAdapter adapter = new BlckAdapter(this, fileList);
-        blckRV.setAdapter(adapter);
+        mBlckRV.setAdapter(adapter);
     }
 
     private void requestReadStoragePermission() {

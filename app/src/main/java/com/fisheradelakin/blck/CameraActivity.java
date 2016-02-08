@@ -815,7 +815,7 @@ public class CameraActivity extends AppCompatActivity
             if (null == mCameraDevice) {
                 return;
             }
-            mFile = new File(mFolder, "blck" + new Date().toString() + ".jpg");
+            mFile = new File(mFolder, "blck " + new Date().toString() + ".jpg");
             // This is the CaptureRequest.Builder that we use to take a picture.
             final CaptureRequest.Builder captureBuilder =
                     mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
