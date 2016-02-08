@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        File folder = new File(Environment.getExternalStorageDirectory() + "/Blck");
+        File folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Blck");
 
         if (!folder.exists()) {
             folder.mkdir();
