@@ -9,4 +9,5 @@
     <string name="request_storage_permission">This app needs the storage permission to save pictures.</string>
     <string name="intro_message">blck</string>
     <string name="capture_desc">Capture button</string>
+    <string name="img_content_desc">Image</string>
 </resources>

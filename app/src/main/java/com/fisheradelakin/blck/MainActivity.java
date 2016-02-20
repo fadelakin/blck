@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final int READ_STORAGE_PERMISSION = 1;
-    private RecyclerView mBlckRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +67,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        mBlckRV = (RecyclerView) findViewById(R.id.blck_rv);
-        mBlckRV.setHasFixedSize(true);
+        RecyclerView blckRV = (RecyclerView) findViewById(R.id.blck_rv);
+        blckRV.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
-        mBlckRV.setLayoutManager(layoutManager);
+        blckRV.setLayoutManager(layoutManager);
         BlckAdapter adapter = new BlckAdapter(this, fileList);
-        mBlckRV.setAdapter(adapter);
+        blckRV.setAdapter(adapter);
     }
 
     private void requestReadStoragePermission() {
@@ -97,27 +96,5 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

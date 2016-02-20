@@ -63,8 +63,6 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
 
         int scaledHeight = (int) (height * scaleFactor);
 
-        Log.i("TEST", "ORIENTATION: " + getOrientationFromExif(file.getAbsolutePath()));
-
         Picasso.with(mContext)
                 .load(file)
                 .rotate(getOrientationFromExif(file.getAbsolutePath()))
