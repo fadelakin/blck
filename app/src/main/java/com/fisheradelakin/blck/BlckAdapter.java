@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,6 +74,12 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
                 .into(holder.picture);
     }
 
+    public void update(List<File> files) {
+        mFileList.clear();
+        mFileList = files;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mFileList.size();
@@ -105,7 +113,15 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
             if(file != null) {
                 file.delete();
                 Toast.makeText(mContext, "File deleted", Toast.LENGTH_SHORT).show();
-                notifyDataSetChanged();
+                //notifyDataSetChanged();
+                File folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Blck");
+                List<File> fileList = new ArrayList<>();
+                for(File file1 : folder.listFiles()) {
+                    if (file1.isFile()) {
+                        fileList.add(file1);
+                    }
+                }
+                update(fileList);
             }
             return true;
         }
