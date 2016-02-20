@@ -59,7 +59,9 @@ public class BlckAdapter extends RecyclerView.Adapter<BlckAdapter.ViewHolder> {
 
         int screenWidth = sharedPreferences.getInt(BlckApplication.SCREEN_WIDTH, 20);
 
-        float scaleFactor = screenWidth / width;
+        float scaleFactor = 0;
+        if (width > 0)
+            scaleFactor = screenWidth / width;
 
         int scaledHeight = (int) (height * scaleFactor);
 
